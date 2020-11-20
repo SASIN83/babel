@@ -74,14 +74,14 @@ def set_filename_version(filename, version_number, pattern):
                           flags=re.DOTALL | re.MULTILINE)
 
     if not changed:
-        fail('Could not find %s in %s', pattern, filename)
+        fail(f'Could not find {pattern} in {filename}')
 
     with open(filename, 'w') as f:
         f.write(contents)
 
 
 def set_init_version(version):
-    info('Setting __init__.py version to %s', version)
+    info(f'Setting __init__.py version to {version}')
     set_filename_version('babel/__init__.py', version, '__version__')
 
 
@@ -117,7 +117,7 @@ def make_git_commit(message, *args):
 
 
 def make_git_tag(tag):
-    info('Tagging "%s"', tag)
+    info(f'Tagging "{tag}"')
     Popen(['git', 'tag', tag]).wait()
 
 
@@ -131,12 +131,11 @@ def main():
     version, release_date, codename = rv
     dev_version = bump_version(version) + '-dev'
 
-    info('Releasing %s (codename %s, release date %s)',
-         version, codename, release_date.strftime('%d/%m/%Y'))
+    info(f'Releasing {version} (codename {codename}, release date {release_date.strftime('%d/%m/%Y')}')
     tags = get_git_tags()
 
     if version in tags:
-        fail('Version "%s" is already tagged', version)
+        fail(f'Version {version} is already tagged')
     if release_date.date() != date.today():
         fail('Release date is not today (%s != %s)')
 
